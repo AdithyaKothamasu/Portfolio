@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 Adithya's Creative Portfolio Website
 
-## Getting Started
+An extremely creative and interactive portfolio website built with Next.js, featuring a fun DVD-style bouncing profile image and smooth animations.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 🎯 Interactive Entry Screen
+- **DVD-style bouncing profile image** - Your profile picture bounces around the screen like the classic DVD logo
+- **"Tap anywhere to enter"** - Interactive entry point with smooth animations
+- **Floating particles** - Subtle animated elements for visual appeal
+- **GSAP animations** - Smooth, professional animations throughout
+
+### 🎨 Main Website
+- **Clean, modern design** - Beautiful gradient backgrounds with glassmorphism effects
+- **Responsive layout** - Works perfectly on all device sizes
+- **Navigation** - Easy navigation between entry screen and main content
+- **Placeholder sections** - Ready for your projects, experience, and contact information
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15
+- **Styling**: Tailwind CSS v4 + shadcn/ui
+- **Animations**: GSAP (GreenSock Animation Platform)
+- **Fonts**: Geist Sans & Geist Mono
+- **Icons**: Lucide React
+
+## 🚀 Getting Started
+
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Open your browser** and navigate to `http://localhost:3000`
+
+## 📱 How It Works
+
+1. **Entry Screen**: Users see your bouncing profile image with "TAP ANYWHERE TO ENTER"
+2. **Click/Tap**: Anywhere on the screen triggers the transition animation
+3. **Main Website**: Users land on your main portfolio page with navigation back to entry
+
+## 🎨 Customization
+
+### Profile Image
+Replace the Unsplash placeholder in `app/components/EntryScreen.js`:
+```javascript
+backgroundImage: "url('YOUR_IMAGE_URL_HERE')"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Colors & Styling
+Modify the gradient backgrounds and colors in the component files using Tailwind CSS classes.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Content
+Update the placeholder content in `app/main/page.js` with your actual portfolio information.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```
+portfolio/
+├── app/
+│   ├── components/
+│   │   └── EntryScreen.js      # Interactive entry screen
+│   ├── main/
+│   │   └── page.js             # Main portfolio page
+│   ├── globals.css             # Global styles & Tailwind
+│   ├── layout.js               # Root layout
+│   └── page.js                 # Entry point
+├── lib/
+│   └── utils.js                # shadcn/ui utilities
+└── package.json
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🎭 Animation Details
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **DVD Bouncing**: Random movement patterns with varying speeds
+- **Rotation**: Continuous rotation with random duration variations
+- **Scale**: Subtle pulsing effect on the profile image
+- **Transitions**: Smooth fade and scale animations between pages
+- **Particles**: Floating animated elements for visual interest
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🌟 Future Enhancements
 
-## Deploy on Vercel
+- Add more interactive elements
+- Implement smooth page transitions
+- Add sound effects
+- Create more animation variations
+- Add portfolio content sections
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📄 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+**Built with ❤️ using Next.js, GSAP, and Tailwind CSS**
