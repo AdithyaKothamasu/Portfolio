@@ -118,7 +118,7 @@ export default function EntryScreen({ onTransition }) {
 
       {/* Tap to Enter Text - Overlay */}
       <TextType
-        text={['Hey, I\'m Adithya', 'Welcome to my fun little website', 'Tap anywhere to ENTER']}
+        text={['Hey, I\'m Adithya', 'Welcome to my corner of the internet', 'Tap anywhere to ENTER']}
         typingSpeed={75}
         pauseDuration={1500}
         showCursor={true}
