@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Adithya's Portfolio",
-  description: "Welcome to my creative portfolio website",
+  title: "Adithya's corner",
+  description: "Welcome to my fun little corner of the internet",
 };
 
 export default function RootLayout({ children }) {
