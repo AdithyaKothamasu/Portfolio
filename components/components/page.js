@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { CircularTestimonials } from '@/components/ui/circular-testimonials';
-import TextPressure from '../components/TextPressure';
+import TextPressure from './TextPressure';
 import { ExpandingCards, CardItem } from "@/components/ui/expanding-cards";
-import FlowingMenu from '../components/FlowingMenu';
+import FlowingMenu from './FlowingMenu';
 
 export default function MainPage() {
     const testimonials = [{

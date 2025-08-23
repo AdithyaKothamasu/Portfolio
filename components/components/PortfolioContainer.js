@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EntryScreen from './EntryScreen';
-import MainPage from '../main/page';
+import MainPage from './page';
 
 export default function PortfolioContainer() {
   const [showMainPage, setShowMainPage] = useState(false);
