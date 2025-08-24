@@ -99,7 +99,7 @@ export const ExpandingCards = React.forwardRef(({ className, items, defaultActiv
               href={item.linkHref} 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="text-white/80 opacity-0 transition-all duration-300 delay-225 ease-out group-data-[active=true]:opacity-100 cursor-pointer p-4 hover:bg-white/10 rounded-lg inline-block"
+              className="text-white/80 flex flex-row items-center justify-center gap-2 opacity-0 transition-all duration-300 delay-225 ease-out group-data-[active=true]:opacity-100 cursor-pointer p-4 hover:bg-white/10 rounded-lg"
               onClick={(e) => {
                 e.stopPropagation();
                 if (item.linkHref) {
@@ -107,6 +107,7 @@ export const ExpandingCards = React.forwardRef(({ className, items, defaultActiv
                 }
               }}
             >
+              <p className="text-md font-bold">Visit</p>
               <ArrowUpRightIcon className="w-4 h-4 hover:scale-200 transition-all duration-300 delay-225 ease-out" />
             </a>
           </article>
