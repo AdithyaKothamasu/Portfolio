@@ -23,12 +23,12 @@ export default function MainPage() {
         src: "/student.jpeg"
     }];
     const projects = [
-        {
-            id: "animator-chat",
-            title: "Animator Chat - Ongoing",
-            description: "This is a prompt to motion graphics generator. It is like cursor but for motion graphics. this is currently in the pre-MVP stage",
-            imgSrc: "/animator-chat.png",
-        },
+        // {
+        //     id: "animator-chat",
+        //     title: "Animator Chat - Ongoing",
+        //     description: "This is a prompt to motion graphics generator. It is like cursor but for motion graphics. this is currently in the pre-MVP stage",
+        //     imgSrc: "/animator-chat.png",
+        // },
         {
             id: "macrobalance",
             title: "MacroBalance - Calorie Tracker",
@@ -41,7 +41,8 @@ export default function MainPage() {
             title: "Trash Dump",
             description: "This is a useless but fun website where people can dump whatever text they want and then dive in to see what others dumped. you can also edit others dump.",
             imgSrc:"/trash-dump.png",
-            linkHref:"https://trashdump.online/"
+            linkHref:"https://dumpstr.vercel.app"
+            // linkHref:"https://trashdump.online/"
         },
         {
             id: "KOCOwork",
