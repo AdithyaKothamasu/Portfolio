@@ -5,10 +5,13 @@ import { CircularTestimonials } from '@/components/ui/circular-testimonials';
 import TextPressure from './TextPressure';
 import { ExpandingCards, CardItem } from "@/components/ui/expanding-cards";
 import FlowingMenu from './FlowingMenu';
+import HeroSection from './HeroSection';
+import WorkExperience from './WorkExperience';
+import ProjectsShowcase from './ProjectsShowcase';
 
 export default function MainPage() {
     const testimonials = [{
-        name: "I'm a Software Developer and an INDIE HACKER🧑‍💻",
+        name: "I'm a Software Developer",
         quote: "I have been building products and fun stuff for the past 1 year. You'll see what I've built below.",
         src: "/developer.jpeg",
     },
@@ -32,7 +35,7 @@ export default function MainPage() {
         {
             id: "macrobalance",
             title: "MacroBalance - Calorie Tracker",
-            description: "My first production level project, This is an AI calorie and fitness habit tracker. helps you track nutrition and lose/gain weight.",
+            description: "My first production level project, This is an AI calorie and fitness habit tracker. Helps you track your nutrition and lose/gain weight. Built this to help myself and I have lost 8Kgs since I started using it 6 months ago.",
             imgSrc: "/macrobalance.png",
             linkHref: "https://macrobalance.app"
         },
@@ -41,8 +44,7 @@ export default function MainPage() {
             title: "Trash Dump",
             description: "This is a useless but fun website where people can dump whatever text they want and then dive in to see what others dumped. you can also edit others dump.",
             imgSrc:"/trash-dump.png",
-            linkHref:"https://dumpstr.vercel.app"
-            // linkHref:"https://trashdump.online/"
+            linkHref:"https://trashdump.online/"
         },
         {
             id: "KOCOwork",
@@ -61,17 +63,17 @@ export default function MainPage() {
     ]
     
 const socials = [
-    { link: 'https://www.instagram.com/adithya_kothamasu_109/', text: 'Instagram', image: '/face.png' },
+    { link: 'https://github.com/AdithyaKothamasu', text: 'Github', image: '/github.jpg' },
     { link: 'https://x.com/puzzledAdi', text: 'X', image: '/fitness.jpeg' },
     { link: 'https://www.linkedin.com/in/sai-adithya-kothamasu', text: 'Linkedin', image: '/student.jpeg' },
+    { link: 'https://www.instagram.com/adithya_kothamasu_109/', text: 'Instagram', image: '/face.png' },
   ];
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center relative text-white mt-10">
       {/* Your Content/Components */}
-        {/* <img src="/face.png" alt="Adithya" width={100} height={100} className="rounded-full z-10"/> */}
         <div style={{position: 'relative', height: '150px md:h-200px'}}>
             <TextPressure
-                text="Adithya.cloud"
+                text="ADITHYA.CLOUD"
                 flex={true}
                 alpha={false}
                 stroke={false}
@@ -83,26 +85,11 @@ const socials = [
                 minFontSize={window.innerWidth < 768 ? 100 : 200}
             />
         </div>
-        <div className="relative bg-amber-200 m-8 rounded-2xl md:rounded-full md:p-20 z-10">
-            <CircularTestimonials
-            testimonials={testimonials}
-            />
+        <HeroSection />
+        <WorkExperience />
+        <div className="mt-8 mb-20 md:w-[70%] w-full mx-auto">
+            <ProjectsShowcase projects={projects} />
         </div>
-        <div style={{position: 'relative', height: '150px md:h-200px'}}>
-            <TextPressure
-                text="Projects"
-                flex={true}
-                alpha={false}
-                stroke={false}
-                width={true}
-                weight={true}
-                italic={true}
-                textColor="#ffffff"
-                strokeColor="#ff0000"
-                minFontSize={window.innerWidth < 768 ? 100 : 200}
-            />
-        </div>
-        <ExpandingCards className="mt-8 mb-20" items={projects} defaultActiveIndex={0} />
 
         <div className='w-full' style={{ height: '300px', position: 'relative' }}>
             <FlowingMenu items={socials} />

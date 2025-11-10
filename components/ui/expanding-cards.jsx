@@ -77,7 +77,7 @@ export const ExpandingCards = React.forwardRef(({ className, items, defaultActiv
 
           <article className="absolute inset-0 flex flex-col justify-end gap-2 p-4">
             <h3
-              className="hidden origin-left rotate-90 text-sm font-light uppercase tracking-wider text-white/80 opacity-100 transition-all duration-300 ease-out md:block group-data-[active=true]:opacity-0">
+              className="hidden origin-left rotate-90 text-sm font-normal font-mono uppercase tracking-wider text-white/80 opacity-100 transition-all duration-300 ease-out md:block group-data-[active=true]:opacity-0">
               {item.title}
             </h3>
 
@@ -87,12 +87,12 @@ export const ExpandingCards = React.forwardRef(({ className, items, defaultActiv
             </div>
 
             <h3
-              className="text-xl font-bold text-white opacity-0 transition-all duration-300 delay-150 ease-out group-data-[active=true]:opacity-100">
+              className="text-xl font-bold font-mono text-white opacity-0 transition-all duration-300 delay-150 ease-out group-data-[active=true]:opacity-100">
               {item.title}
             </h3>
 
             <p
-              className="w-full max-w-xs text-sm text-white/80 opacity-0 transition-all duration-300 delay-225 ease-out group-data-[active=true]:opacity-100">
+              className="w-full max-w-xs text-sm font-mono text-white/80 opacity-0 transition-all duration-300 delay-225 ease-out group-data-[active=true]:opacity-100">
               {item.description}
             </p>
             <a 
