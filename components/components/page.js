@@ -35,7 +35,7 @@ export default function MainPage() {
         {
             id: "macrobalance",
             title: "MacroBalance - Calorie Tracker",
-            description: "My first production level project, This is an AI calorie and fitness habit tracker. Helps you track your nutrition and lose/gain weight. Built this to help myself and I have lost 8Kgs since I started using it 6 months ago.",
+            description: "My first production level project, This is an AI calorie and fitness habit tracker. Helps you track your nutrition and lose/gain weight. Built this to help myself and I have lost 10Kgs since I started using it in July 2025.",
             imgSrc: "/macrobalance.png",
             linkHref: "https://macrobalance.app"
         },
@@ -59,6 +59,20 @@ export default function MainPage() {
             description: "Simple ios app that tells you how many calories are there in your meal using a picture",
             imgSrc: "/hmc.PNG",
             linkHref: "https://apps.apple.com/us/app/howmanycalories/id6745625874"
+        },
+        {
+            id:"alumforms",
+            title: "Alum Forms ",
+            description: "Another freelance project, I built a website for a local business called ALum Forms, which is an aluminium formwork design and manufacturing company in Hyderabad.",
+            imgSrc: "/alumforms.png",
+            linkHref: "https://alumforms.com"
+        },
+        {
+            id:"Twitter reply assistant",
+            title: "Twitter/X reply assistant",
+            description: "A chrome extension which is atwitter/x reply assistant that helps you in writing different types/tones of replies. Made this while trying to grow on x, helped in putting in more posts and replies, which helps with the algorithm.",
+            imgSrc: "/x-bot.png",
+            linkHref: "https://github.com/AdithyaKothamasu/X-reply-extension"
         },
     ]
     

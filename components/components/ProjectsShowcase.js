@@ -163,7 +163,7 @@ function ProjectCard({ project, index, isHovered, onHover, onLeave, onClick }) {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0.7 }}
             transition={{ duration: 0.3, delay: 0.15 }}
-            className="text-white/80 text-sm md:text-base mb-4 line-clamp-2 font-mono tracking-tight font-light leading-relaxed"
+            className="text-white text-sm md:text-base mb-4 line-clamp-2 font-mono tracking-tight font-light leading-relaxed"
           >
             {project.description}
           </motion.p>
