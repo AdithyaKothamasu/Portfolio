@@ -1,12 +1,24 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Code, Gamepad2, Calendar, MapPin, ExternalLink } from 'lucide-react';
+import { Code, Gamepad2, Calendar, MapPin, ExternalLink, FileX, Computer } from 'lucide-react';
 import { useState } from 'react';
 import TextPressure from './TextPressure';
 const workExperiences = [
   {
     id: 1,
+    role: 'Software Engineer Intern',
+    company: 'Human Powered Health Technologies', // Update with actual company name
+    location: 'Hyderabad, Telangana', // Update with actual location
+    duration: 'Jan 2026 - Present',
+    icon: Computer,
+    color: 'from-green-500/20 to-emerald-500/20',
+    borderColor: 'border-green-500/30',
+    iconColor: 'text-green-400',
+    gradient: 'bg-gradient-to-br from-green-500/10 via-emerald-500/10 to-transparent',
+  },
+  {
+    id: 2,
     role: 'Frontend Developer Intern',
     company: 'Human Powered Health Technologies', // Update with actual company name
     location: 'Hyderabad, Telangana', // Update with actual location
@@ -18,7 +30,7 @@ const workExperiences = [
     gradient: 'bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-transparent',
   },
   {
-    id: 2,
+    id: 3,
     role: 'Game Developer Intern',
     company: 'Caarya', // Update with actual company name
     location: 'Remote', // Update with actual location

@@ -26,12 +26,12 @@ export default function MainPage() {
         src: "/student.jpeg"
     }];
     const projects = [
-        // {
-        //     id: "animator-chat",
-        //     title: "Animator Chat - Ongoing",
-        //     description: "This is a prompt to motion graphics generator. It is like cursor but for motion graphics. this is currently in the pre-MVP stage",
-        //     imgSrc: "/animator-chat.png",
-        // },
+        {
+            id: "REMLogic",
+            title: "REMLogic - still in testflight beta",
+            description: "Built this app to help me analyze and compare my sleep data from different nights, and also see how different events like Dinner, Workout, Caffeine and their timings affect my sleep. I also integrated a way to connect my OpenClaw Agent(Odin) to this app. So now i have a UI to view compare/analyze my data and also can chat with my agent to get insights and recommendations.",
+            imgSrc: "/remlogic.png",
+        },
         {
             id: "macrobalance",
             title: "MacroBalance - Calorie Tracker",
@@ -51,7 +51,7 @@ export default function MainPage() {
             title: "KOCOwork",
             description: "This is a freelance project, I built a website for a local business called KOCOwork, which is a co-working space in Hyderabad.",
             imgSrc: "/kocowork.png",
-            linkHref: "https://kocowork.in"
+            linkHref: "https://kocowork-website.adithya261004.workers.dev/"
         },
         {
             id:"hmc",
