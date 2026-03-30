@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CircularTestimonials } from '@/components/ui/circular-testimonials';
 import TextPressure from './TextPressure';
@@ -10,6 +11,19 @@ import WorkExperience from './WorkExperience';
 import ProjectsShowcase from './ProjectsShowcase';
 
 export default function MainPage() {
+    const [minFontSize, setMinFontSize] = useState(200);
+
+    useEffect(() => {
+        const updateMinFontSize = () => {
+            setMinFontSize(window.innerWidth < 768 ? 100 : 200);
+        };
+
+        updateMinFontSize();
+        window.addEventListener('resize', updateMinFontSize);
+
+        return () => window.removeEventListener('resize', updateMinFontSize);
+    }, []);
+
     const testimonials = [{
         name: "I'm a Software Developer",
         quote: "I have been building products and fun stuff for the past 1 year. You'll see what I've built below.",
@@ -97,7 +111,7 @@ const socials = [
                 italic={true}
                 textColor="#ffffff"
                 strokeColor="#ff0000"
-                minFontSize={window.innerWidth < 768 ? 100 : 200}
+                minFontSize={minFontSize}
             />
         </div>
         <HeroSection />

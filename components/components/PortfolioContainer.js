@@ -11,9 +11,9 @@ export default function PortfolioContainer() {
   const [transitionTriggered, setTransitionTriggered] = useState(false);
   const [transitionDone, setTransitionDone] = useState(false);
 
-  const handleTransition = () => {
+  const handleTransition = useCallback(() => {
     setTransitionTriggered(true);
-  };
+  }, []);
 
   const handleMidpoint = useCallback(() => {
     setShowMainPage(true);
@@ -23,9 +23,12 @@ export default function PortfolioContainer() {
     setTransitionDone(true);
   }, []);
 
+  const mainLayerClassName = transitionDone
+    ? 'relative z-10 min-h-screen'
+    : 'fixed inset-0 z-10 overflow-hidden pointer-events-none';
+
   return (
     <div className="min-h-screen w-full bg-[#0f0f0f] relative text-white">
-      {/* Fixed Background Grid Pattern */}
       <div
         className="fixed inset-0 z-0"
         style={{
@@ -37,26 +40,22 @@ export default function PortfolioContainer() {
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 min-h-screen overflow-y-auto">
-        {!showMainPage ? (
-          <div className="min-h-screen flex items-center justify-center">
-            <EntryScreen onTransition={handleTransition} />
-          </div>
-        ) : (
-          <motion.div
-            key="main"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-            className="min-h-screen"
-          >
-            <MainPage />
-          </motion.div>
-        )}
-      </div>
+      <motion.div
+        initial={false}
+        animate={{ opacity: showMainPage ? 1 : 0 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className={mainLayerClassName}
+        aria-hidden={!showMainPage}
+      >
+        <MainPage />
+      </motion.div>
 
-      {/* Cloud transition overlay -- always mounted until transition completes */}
+      {!showMainPage && (
+        <div className="fixed inset-0 z-20 flex items-center justify-center">
+          <EntryScreen onTransition={handleTransition} />
+        </div>
+      )}
+
       {!transitionDone && (
         <CloudTransition
           triggered={transitionTriggered}

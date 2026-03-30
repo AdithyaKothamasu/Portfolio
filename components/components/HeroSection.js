@@ -23,7 +23,7 @@ export default function HeroSection() {
         <div className="flex justify-end md:hidden pt-4">
           <div className="relative w-40">
             <Image
-              src="/hero.png"
+              src="/hiking.jpeg"
               alt="Portrait of Adithya Kothamasu"
               fill
               className="object-cover"

@@ -147,6 +147,9 @@ export default function CloudTransition({ triggered, onMidpoint, onComplete }) {
             top: '50%',
             marginLeft: '-25vw',
             marginTop: '-15vw',
+            willChange: 'transform, opacity',
+            transformOrigin: '50% 50%',
+            backfaceVisibility: 'hidden',
           }}
         >
           <g opacity={0.97}>
