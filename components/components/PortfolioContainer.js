@@ -1,16 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import EntryScreen from './EntryScreen';
 import MainPage from './page';
+import CloudTransition from './CloudTransition';
 
 export default function PortfolioContainer() {
   const [showMainPage, setShowMainPage] = useState(false);
+  const [transitionTriggered, setTransitionTriggered] = useState(false);
+  const [transitionDone, setTransitionDone] = useState(false);
 
   const handleTransition = () => {
-    setShowMainPage(true);
+    setTransitionTriggered(true);
   };
+
+  const handleMidpoint = useCallback(() => {
+    setShowMainPage(true);
+  }, []);
+
+  const handleTransitionComplete = useCallback(() => {
+    setTransitionDone(true);
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-[#0f0f0f] relative text-white">
@@ -25,37 +36,34 @@ export default function PortfolioContainer() {
           backgroundSize: "20px 20px",
         }}
       />
-      
-      {/* Scrollable Content Container */}
+
+      {/* Content */}
       <div className="relative z-10 min-h-screen overflow-y-auto">
-        {/* Component Content with Animation */}
-        <AnimatePresence mode="wait">
-          {!showMainPage ? (
-            <motion.div
-              key="entry"
-              initial={{ opacity: 1, scale: 1 }}
-              exit={{ 
-                opacity: 1,
-                scale: 20,
-                transition: { duration: 1.5, ease: "easeIn" }
-              }}
-              className="min-h-screen flex items-center justify-center"
-            >
-              <EntryScreen onTransition={handleTransition} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="main"
-              initial={{ opacity: 1, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeIn" }}
-              className="min-h-screen"
-            >
-              <MainPage />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {!showMainPage ? (
+          <div className="min-h-screen flex items-center justify-center">
+            <EntryScreen onTransition={handleTransition} />
+          </div>
+        ) : (
+          <motion.div
+            key="main"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+            className="min-h-screen"
+          >
+            <MainPage />
+          </motion.div>
+        )}
       </div>
+
+      {/* Cloud transition overlay -- always mounted until transition completes */}
+      {!transitionDone && (
+        <CloudTransition
+          triggered={transitionTriggered}
+          onMidpoint={handleMidpoint}
+          onComplete={handleTransitionComplete}
+        />
+      )}
     </div>
   );
 }
