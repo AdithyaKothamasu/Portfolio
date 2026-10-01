@@ -1,29 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { CircularTestimonials } from '@/components/ui/circular-testimonials';
-import TextPressure from './TextPressure';
-import { ExpandingCards, CardItem } from "@/components/ui/expanding-cards";
-import FlowingMenu from './FlowingMenu';
+import PortfolioMasthead from './PortfolioMasthead';
 import HeroSection from './HeroSection';
 import WorkExperience from './WorkExperience';
 import ProjectsShowcase from './ProjectsShowcase';
+import SkyNavigation from './SkyNavigation';
 
 export default function MainPage() {
-    const [minFontSize, setMinFontSize] = useState(200);
-
-    useEffect(() => {
-        const updateMinFontSize = () => {
-            setMinFontSize(window.innerWidth < 768 ? 100 : 200);
-        };
-
-        updateMinFontSize();
-        window.addEventListener('resize', updateMinFontSize);
-
-        return () => window.removeEventListener('resize', updateMinFontSize);
-    }, []);
-
     const testimonials = [{
         name: "I'm a Software Developer",
         quote: "I have been building products and fun stuff for the past 1 year. You'll see what I've built below.",
@@ -35,8 +18,8 @@ export default function MainPage() {
         src: "/fitness.jpeg",
     },
     {
-        name: "I'm a STUDENT 👨🏽‍🎓",
-        quote: "I'm currently a senior at BITS Pilani, Hyderabad Campus. I'm pursuing a bachelors in Computer Science. I also have a minor degree in Finance",
+        name: "I'm a BITS Pilani graduate 👨🏽‍🎓",
+        quote: "I graduated from BITS Pilani, Hyderabad Campus, with a bachelor's in Computer Science and a minor in Finance.",
         src: "/student.jpeg"
     }];
     const projects = [
@@ -98,31 +81,21 @@ const socials = [
     { link: 'https://www.instagram.com/adithya_kothamasu_109/', text: 'Instagram', image: '/face.png' },
   ];
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center relative text-white mt-10">
-      {/* Your Content/Components */}
-        <div style={{position: 'relative', height: '150px md:h-200px'}}>
-            <TextPressure
-                text="ADITHYA.CLOUD"
-                flex={true}
-                alpha={false}
-                stroke={false}
-                width={true}
-                weight={true}
-                italic={true}
-                textColor="#ffffff"
-                strokeColor="#ff0000"
-                minFontSize={minFontSize}
-            />
-        </div>
-        <HeroSection />
-        <WorkExperience />
-        <div className="mt-8 mb-20 md:w-[70%] w-full mx-auto">
-            <ProjectsShowcase projects={projects} />
-        </div>
-
-        <div className='w-full' style={{ height: '300px', position: 'relative' }}>
-            <FlowingMenu items={socials} />
-        </div>
-    </div>
+    <main className="sky-journal" id="top">
+      <SkyNavigation />
+      <PortfolioMasthead />
+      <HeroSection />
+      <WorkExperience />
+      <ProjectsShowcase projects={projects} />
+      <footer className="journal-contact" id="contact">
+        <div className="journal-section-label">04 / KEEP IN TOUCH</div>
+        <div className="contact-heading"><h2>Say hello.</h2><span aria-hidden="true">↗</span></div>
+        <p>Find me around the internet.</p>
+        <nav aria-label="Social links" className="journal-socials">
+          {socials.map(item => <a key={item.text} href={item.link} target="_blank" rel="noopener noreferrer">{item.text}<span aria-hidden="true">↗</span></a>)}
+        </nav>
+        <div className="journal-signoff"><span>ADITHYA.CLOUD</span><a href="#top">Back to the sky ↑</a></div>
+      </footer>
+    </main>
   );
 }
