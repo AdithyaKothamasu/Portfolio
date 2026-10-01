@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
@@ -15,152 +15,30 @@ const CLOUD_DEF = {
   ],
 };
 
-function getPositions() {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  return [
-    { tx: -vw * 0.4, ty: vh * 0.34, idleScale: 0.74, idleOpacity: 0.92 },
-    { tx:  vw * 0.4, ty: vh * 0.34, idleScale: 0.66, idleOpacity: 0.78 },
-    { tx: -vw * 0.55, ty: -vh * 0.55, idleScale: 0.5, idleOpacity: 0 },
-    { tx:  vw * 0.55, ty: -vh * 0.55, idleScale: 0.5, idleOpacity: 0 },
-    { tx: 0,           ty: -vh * 0.62, idleScale: 0.5, idleOpacity: 0 },
-    { tx: 0,           ty:  vh * 0.52, idleScale: 0.4, idleOpacity: 0 },
-  ];
-}
-
 export default function CloudTransition({ triggered, onMidpoint, onComplete }) {
   const containerRef = useRef(null);
-  const onMidpointRef = useRef(onMidpoint);
-  const onCompleteRef = useRef(onComplete);
-  const floatTweensRef = useRef([]);
-  const hasTriggeredRef = useRef(false);
-
   useEffect(() => {
-    onMidpointRef.current = onMidpoint;
-    onCompleteRef.current = onComplete;
-  });
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const clouds = containerRef.current.querySelectorAll('[data-tcloud]');
-    const positions = getPositions();
-
-    clouds.forEach((cloud, i) => {
-      const pos = positions[i];
-      gsap.set(cloud, {
-        x: pos.tx,
-        y: pos.ty,
-        scale: pos.idleScale,
-        opacity: pos.idleOpacity,
-      });
-    });
-
-    const tweens = [];
-    [0, 1].forEach((idx) => {
-      tweens.push(
-        gsap.to(clouds[idx], {
-          y: `+=${gsap.utils.random(-12, 12)}`,
-          duration: gsap.utils.random(4, 6),
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-          delay: idx * 0.8,
-        }),
-        gsap.to(clouds[idx], {
-          x: `+=${gsap.utils.random(-6, 6)}`,
-          duration: gsap.utils.random(5, 8),
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-          delay: idx * 0.4 + 0.5,
-        })
-      );
-    });
-    floatTweensRef.current = tweens;
-
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 2, ease: 'power2.out', delay: 0.5 }
-    );
-
-    return () => tweens.forEach(t => t.kill());
-  }, []);
-
-  useEffect(() => {
-    if (!triggered || hasTriggeredRef.current || !containerRef.current) return;
-    hasTriggeredRef.current = true;
-
-    floatTweensRef.current.forEach(t => t.kill());
-
-    const clouds = containerRef.current.querySelectorAll('[data-tcloud]');
-    const positions = getPositions();
-
-    const tl = gsap.timeline({
-      onComplete: () => onCompleteRef.current?.(),
-    });
-
-    tl.to(Array.from(clouds), {
-      x: 0,
-      y: 0,
-      scale: 3,
-      opacity: 0.97,
-      duration: 1.4,
-      ease: 'power2.in',
-      stagger: 0.04,
-    });
-
-    tl.call(() => onMidpointRef.current?.());
-    tl.to({}, { duration: 0.2 });
-
-    const outTl = gsap.timeline();
-    clouds.forEach((cloud, i) => {
-      outTl.to(cloud, {
-        x: positions[i].tx * 1.4,
-        y: positions[i].ty * 1.4,
-        scale: 0.6,
-        opacity: 0,
-        duration: 2.5,
-        ease: 'power2.out',
-      }, 0);
-    });
-    tl.add(outTl);
-
-    return () => tl.kill();
-  }, [triggered]);
-
-  return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 50, opacity: 0 }}
-    >
-      {Array.from({ length: 6 }).map((_, i) => (
-        <svg
-          key={i}
-          data-tcloud
-          className="absolute"
-          viewBox={CLOUD_DEF.viewBox}
-          style={{
-            width: '50vw',
-            left: '50%',
-            top: '50%',
-            marginLeft: '-25vw',
-            marginTop: '-15vw',
-            willChange: 'transform, opacity',
-            transformOrigin: '50% 50%',
-            backfaceVisibility: 'hidden',
-          }}
-        >
-          <g opacity={0.97}>
-            {CLOUD_DEF.shapes.map((s, j) =>
-              s.t === 'c'
-                ? <circle key={j} cx={s.cx} cy={s.cy} r={s.r} fill="white" />
-                : <ellipse key={j} cx={s.cx} cy={s.cy} rx={s.rx} ry={s.ry} fill="white" />
-            )}
-          </g>
-        </svg>
-      ))}
-    </div>
-  );
+    const root=containerRef.current;
+    const clouds=Array.from(root.querySelectorAll('[data-tcloud]'));
+    const width=window.innerWidth, height=window.innerHeight;
+    const positions=[[-width*.4,height*.34],[width*.4,height*.34],[-width*.55,-height*.55],[width*.55,-height*.55],[0,-height*.62],[0,height*.52]];
+    const curtain=root.querySelector('.sky-intro-curtain');
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){if(triggered){onMidpoint();onComplete();}return;}
+    gsap.set(root,{opacity:1});
+    gsap.set(curtain,{opacity:0});
+    clouds.forEach((cloud,i)=>gsap.set(cloud,{x:positions[i][0],y:positions[i][1],scale:i===0?.74:.66,opacity:i<2?.8:0,force3D:true}));
+    if(!triggered)return;
+    const coveredAt=1.175,exitAt=coveredAt+.12;
+    const timeline=gsap.timeline({onComplete});
+    timeline.to(clouds,{x:0,y:0,scale:3,opacity:1,duration:1.05,ease:'power2.inOut',stagger:.025,force3D:true},0);
+    timeline.to(curtain,{opacity:1,duration:.25,ease:'sine.inOut'},coveredAt-.25);
+    timeline.call(onMidpoint,[],coveredAt);
+    timeline.to(clouds,{x:i=>positions[i][0]*1.4,y:i=>positions[i][1]*1.4,scale:.6,duration:1.65,ease:'power2.out',force3D:true},exitAt);
+    timeline.to(curtain,{opacity:0,duration:.45,ease:'sine.inOut'},exitAt+.1);
+    timeline.to(root,{opacity:0,duration:.6,ease:'sine.inOut'},exitAt+1.05);
+    return()=>timeline.kill();
+  },[triggered,onMidpoint,onComplete]);
+  return <div ref={containerRef} className="sky-intro-transition" aria-hidden="true"><div className="sky-intro-curtain" />
+    {Array.from({length:6}).map((_,i)=><svg key={i} data-tcloud viewBox={CLOUD_DEF.viewBox} focusable="false"><g>{CLOUD_DEF.shapes.map((shape,j)=>shape.t==='c'?<circle key={j} cx={shape.cx} cy={shape.cy} r={shape.r} />:<ellipse key={j} cx={shape.cx} cy={shape.cy} rx={shape.rx} ry={shape.ry} />)}</g></svg>)}
+  </div>;
 }

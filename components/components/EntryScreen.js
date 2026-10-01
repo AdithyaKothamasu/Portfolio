@@ -1,130 +1,86 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import TextType from './TextType';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
-export default function EntryScreen({ onTransition }) {
+const subscribeToMotion = callback => {
+  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+  media.addEventListener('change', callback);
+  return () => media.removeEventListener('change', callback);
+};
+const getMotionPreference = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const getServerMotionPreference = () => false;
+const INTRO_TEXT = ['Hey, I am Adithya', 'Welcome to my corner of the Internet', 'Click to enter'];
+
+export default function EntryScreen({ onEnter, paused = false }) {
   const canvasRef = useRef(null);
-  const animationRef = useRef(null);
+  const pausedRef = useRef(paused);
+  const [textStage,setTextStage] = useState(0);
+  const [displayedText,setDisplayedText] = useState('');
+  const [promptReady,setPromptReady] = useState(false);
+  useEffect(()=>{pausedRef.current=paused;},[paused]);
+
+  const reducedMotion = useSyncExternalStore(subscribeToMotion, getMotionPreference, getServerMotionPreference);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    let timer, active = true, stage = 0, length = 0;
+    setTextStage(0); setDisplayedText(''); setPromptReady(false);
+    const type = () => {
+      if (!active) return;
+      setDisplayedText(INTRO_TEXT[stage].slice(0, ++length));
+      if (length < INTRO_TEXT[stage].length) timer = setTimeout(type, 75);
+      else if (stage === INTRO_TEXT.length - 1) setPromptReady(true);
+      else timer = setTimeout(erase, 1500);
+    };
+    const erase = () => {
+      if (!active) return;
+      setDisplayedText(INTRO_TEXT[stage].slice(0, --length));
+      if (length > 0) timer = setTimeout(erase, 30);
+      else { stage += 1; setTextStage(stage); timer = setTimeout(type, 75); }
+    };
+    timer = setTimeout(type, 75);
+    return () => { active = false; clearTimeout(timer); };
+  }, [reducedMotion]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    
-    // Animation settings
-    let speed = 28;
-    let scale = window.innerWidth < 768 ? 0.05 : 0.1; // Smaller scale for mobile screens
-    let logoColor;
-
-    // DVD object
-    let dvd = {
-      x: 200,
-      y: 300,
-      xspeed: 10,
-      yspeed: 10,
-      img: new Image()
-    };
-
-    // Set canvas size
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Load your profile image (placeholder for now)
-    dvd.img.src = '/face.png';
-    
-    // Ensure image loads before starting animation
-    dvd.img.onload = () => {
-      console.log('Image loaded successfully');
-      // Start animation only after image loads
-      update();
-    };
-    
-    // Pick initial color
-    // pickColor();
-
-    // Pick a random color in RGB format
-    function pickColor() {
-      const r = Math.random() * (254 - 0) + 0;
-      const g = Math.random() * (254 - 0) + 0;
-      const b = Math.random() * (254 - 0) + 0;
-      logoColor = 'rgb(' + r + ',' + g + ', ' + b + ')';
-    }
-
-    // Check for border collision
-    function checkHitBox() {
-      if (dvd.x + dvd.img.width * scale >= canvas.width || dvd.x <= 0) {
-        dvd.xspeed *= -1;
-        // pickColor();
+    const context = canvas?.getContext('2d');
+    if (!context) return;
+    let active = true, frame = 0, previous = 0, x = 100, y = 180, dx = 1, dy = 1;
+    const image = new window.Image();
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    resize();
+    const draw = time => {
+      if (!active || pausedRef.current) return;
+      const width = Math.min(canvas.width * .28, 150);
+      const height = width * image.naturalHeight / image.naturalWidth;
+      const maxX = Math.max(0, canvas.width - width), maxY = Math.max(0, canvas.height - height);
+      if (reducedMotion) { x = maxX / 2; y = Math.min(maxY, canvas.height * .66); }
+      else {
+        const step = Math.min((time - previous) / 1000 || 0, .04) * 210;
+        x += dx * step; y += dy * step;
+        if (x <= 0 || x >= maxX) dx *= -1;
+        if (y <= 0 || y >= maxY) dy *= -1;
+        x = Math.max(0, Math.min(maxX, x)); y = Math.max(0, Math.min(maxY, y));
       }
-      
-      if (dvd.y + dvd.img.height * scale >= canvas.height || dvd.y <= 0) {
-        dvd.yspeed *= -1;
-        // pickColor();
-      }
-    }
-
-    // Main update function
-    function update() {
-      // Clear the canvas (transparent background)
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw DVD Logo (no background rectangle, just the image)
-      ctx.drawImage(dvd.img, dvd.x, dvd.y, dvd.img.width * scale, dvd.img.height * scale);
-      
-      // Move the logo
-      dvd.x += dvd.xspeed;
-      dvd.y += dvd.yspeed;
-      
-      // Check for collision
-      checkHitBox();
-      
-      // Continue animation
-      animationRef.current = setTimeout(update, speed);
-    }
-
-    // Animation will start when image loads
-
-    // Handle window resize
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      previous = time;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(image, x, y, width, height);
+      if (!reducedMotion) frame = requestAnimationFrame(draw);
     };
-
+    image.onload = () => { if (active) draw(performance.now()); };
+    image.src = '/face.png';
+    const handleResize = () => { resize(); if (reducedMotion && image.complete && image.naturalWidth) draw(performance.now()); };
     window.addEventListener('resize', handleResize);
+    return () => { active = false; image.onload = null; cancelAnimationFrame(frame); window.removeEventListener('resize', handleResize); };
+  }, [reducedMotion]);
 
-    // Cleanup
-    return () => {
-      if (animationRef.current) {
-        clearTimeout(animationRef.current);
-      }
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const handleTap = () => {
-    onTransition();
-  };
-
-    return (
-    <div className="absolute inset-0 flex items-center justify-center cursor-pointer" onClick={handleTap}>
-      {/* Canvas for DVD animation */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full text-white"
-        style={{ display: 'block' }}
-      />
-
-      {/* Tap to Enter Text - Overlay */}
-      <TextType
-        text={['Hey, I\'m Adithya', 'Welcome to my corner of the internet', 'Tap anywhere to ENTER']}
-        typingSpeed={75}
-        pauseDuration={1500}
-        showCursor={true}
-        cursorCharacter="|"
-        className="absolute z-20 text-center font-bold font-mono text-white text-4xl"
-      />
-    </div>
-  );
+  const canEnter = promptReady || reducedMotion;
+  const prompt = <button type="button" className={`sky-entry-prompt${canEnter ? ' sky-entry-prompt-ready' : ''}`} aria-label="Click to enter" onClick={event=>{event.stopPropagation();if(canEnter&&!paused)onEnter();}} disabled={!canEnter||paused}>{reducedMotion ? INTRO_TEXT[2] : displayedText}</button>;
+  return <section className="sky-entry" aria-label="Portfolio welcome" data-text-stage={reducedMotion ? 'reduced' : textStage} onClick={()=>{if(canEnter&&!paused)onEnter();}}>
+    <canvas ref={canvasRef} aria-hidden="true" />
+    <span className="sky-entry-copy">
+      {reducedMotion ? <><span className="sky-entry-greeting">{INTRO_TEXT[0]}</span><span className="sky-entry-welcome">{INTRO_TEXT[1]}</span>{prompt}</> : textStage===2 ? prompt : <span className="sky-entry-greeting" aria-live="off">{displayedText}</span>}
+    </span>
+  </section>;
 }

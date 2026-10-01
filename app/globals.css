@@ -307,7 +307,6 @@ html { scroll-behavior: smooth; }
 .journal-project-open:hover svg { transform: translate(3px,-3px); }
 .journal-contact { max-width: 1120px; margin: 96px auto 0; padding: 42px 0 22px; border-top: 1px solid #315b714d; }
 .contact-heading { display: flex; align-items: center; justify-content: space-between; }
-.contact-heading>span { font: 80px "Instrument Serif", Georgia, serif; color: #064c7e; }
 .journal-contact>p { margin: 14px 0 24px; color: #31556b; font-size: 15px; }
 .journal-socials { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 48px; }
 .journal-socials a { display: flex; gap: 28px; align-items: center; padding: 13px 20px; border: 1px solid #315b7159; border-radius: 30px; background: #f8fcff; font-size: 13px; transition: background-color 200ms; }
@@ -358,7 +357,6 @@ html { scroll-behavior: smooth; }
   .journal-project-copy h3 { font-size: 28px; }
   .journal-project-copy p { font-size: 13px; }
   .journal-contact { margin-top: 64px; padding-top: 30px; }
-  .contact-heading>span { font-size: 60px; }
   .journal-dialog-image { height: 230px; }
   .journal-dialog-copy { padding: 24px; }
   .journal-dialog-copy h2 { font-size: 30px; }
@@ -380,3 +378,58 @@ html { scroll-behavior: smooth; }
   .sky-journal .masthead-stage { padding-bottom: 70px; }
 }
 .sky-journal .journal-nav-links a:hover { color: #064c7e; }
+
+/* Stationary clouds: independent of the moving aurora pseudo-element. */
+.sky-cloud { position: absolute; width: 270px; height: 74px; border-radius: 80% 80% 45% 45%; background: #f8fcff; opacity: .64; filter: blur(2px); pointer-events: none; }
+.sky-cloud::before, .sky-cloud::after { content: ""; position: absolute; background: #f8fcff; border-radius: 50%; }
+.sky-cloud::before { width: 132px; height: 114px; left: 43px; top: -48px; }
+.sky-cloud::after { width: 100px; height: 87px; right: 20px; top: -29px; }
+.sky-cloud-east { top: 21%; right: -130px; }
+.sky-cloud-west { top: 65%; left: -160px; }
+.sky-cloud-low { bottom: -28px; right: 12%; opacity: .4; }
+.journal-socials a { gap: 13px; }
+@media (max-width: 700px) {
+  .sky-cloud { width: 190px; height: 54px; opacity: .5; }
+  .sky-cloud::before { width: 96px; height: 84px; left: 32px; top: -36px; }
+  .sky-cloud::after { width: 72px; height: 63px; right: 13px; top: -22px; }
+  .sky-cloud-east { right: -135px; top: 24%; }
+  .sky-cloud-west { left: -140px; top: 64%; }
+  .sky-cloud-low { right: -65px; bottom: -24px; }
+}
+
+/* The original bouncing portrait and cloud reveal, in the light sky theme. */
+.sky-entry { position: fixed; inset: 0; z-index: 20; color: #14354d; }
+.sky-entry canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.sky-entry-copy { position: relative; display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 24px; text-align: center; }
+.sky-entry-greeting { display: block; min-height: 48px; font: 34px/1.25 var(--font-geist-mono), monospace; font-weight: 600; }
+.sky-intro-transition { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; }
+.sky-intro-transition svg { position: absolute; width: max(50vw,40vh); left: 50%; top: 50%; margin-left: min(-25vw,-20vh); margin-top: min(-15vw,-12vh); transform-origin: center; fill: #f2faff; }
+@media (max-width: 700px) { .sky-entry-greeting { font-size: 23px; min-height: 60px; } }
+
+/* Keep layout and assets ready; swap only beneath the opaque cloud cover. */
+.sky-entry { display: grid; place-items: center; pointer-events: auto; transition: none; }
+.sky-intro-transition svg { opacity: 0; }
+.journal-main-layer { opacity: 1; transition: none; }
+.journal-shell[data-intro-phase="intro"] .journal-main-layer,
+.journal-shell[data-intro-phase="covering"] .journal-main-layer { opacity: 0; }
+.journal-shell[data-intro-phase="revealing"] .sky-entry { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .journal-main-layer { transition: none; }
+  .sky-intro-transition { display: none; }
+}
+
+.sky-entry-invitation { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.sky-entry-invitation[hidden] { display: none; }
+.sky-entry-welcome { font-size: 14px; color: #31556b; }
+.sky-entry-prompt { background: transparent; border: 0; padding: 10px 16px; font: 14px var(--font-geist-mono),monospace; color: #14354d; cursor: pointer; }
+.sky-entry-prompt-ready { animation: entryPromptBlink 1.4s step-end 3; }
+.sky-entry-prompt:focus-visible { outline: 2px solid #064c7e; outline-offset: 5px; }
+.sky-entry-prompt:hover, .sky-entry-prompt:focus-visible, .sky-entry-prompt:disabled { animation: none; }
+@keyframes entryPromptBlink { 0%,65%,100% { opacity: 1; } 70%,95% { opacity: 0; } }
+.sky-intro-curtain { position: absolute; inset: 0; background: #f2faff; opacity: 0; }
+.sky-intro-transition { isolation: isolate; will-change: opacity; }
+.sky-intro-transition svg { will-change: transform; backface-visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .sky-entry-prompt { animation: none; } }
+/* Keep the pre-rendered document at its opening position until entry. */
+html { scrollbar-gutter: stable; }
+html:has(.journal-shell:not([data-intro-phase="ready"])) { overflow: hidden; }

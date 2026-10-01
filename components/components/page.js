@@ -5,6 +5,9 @@ import HeroSection from './HeroSection';
 import WorkExperience from './WorkExperience';
 import ProjectsShowcase from './ProjectsShowcase';
 import SkyNavigation from './SkyNavigation';
+import { FaGithub, FaXTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa6';
+
+const socialIcons = { Github: FaGithub, X: FaXTwitter, Linkedin: FaLinkedinIn, Instagram: FaInstagram };
 
 export default function MainPage() {
     const testimonials = [{
@@ -35,14 +38,14 @@ export default function MainPage() {
             title: "MacroBalance - Calorie Tracker",
             description: "My first production level project, This is an AI calorie and fitness habit tracker. Helps you track your nutrition and lose/gain weight. Built this to help myself and I have lost 10Kgs since I started using it in July 2025.",
             imgSrc: "/macrobalance.png",
-            linkHref: "https://macrobalance.app"
+            linkHref: "https://apps.apple.com/us/app/macrobalance-calorie-tracker/id6743542972"
         },
         {
-            id: "trash-dump",
-            title: "Trash Dump",
-            description: "This is a useless but fun website where people can dump whatever text they want and then dive in to see what others dumped. you can also edit others dump.",
-            imgSrc:"/trash-dump.png",
-            linkHref:"https://trashdump.online/"
+            id: "mango",
+            title: "Mango - Monitor Control",
+            description: "A macOS menu bar app for independent MacBook and external-monitor brightness controls, volume, and audio input/output switching. Built in Swift for Apple Silicon Macs running macOS 14 or later.",
+            imgSrc: "/project-assets/mango/icon.png",
+            linkHref: "https://github.com/AdithyaKothamasu/mango"
         },
         {
             id: "KOCOwork",
@@ -89,10 +92,10 @@ const socials = [
       <ProjectsShowcase projects={projects} />
       <footer className="journal-contact" id="contact">
         <div className="journal-section-label">04 / KEEP IN TOUCH</div>
-        <div className="contact-heading"><h2>Say hello.</h2><span aria-hidden="true">↗</span></div>
+        <div className="contact-heading"><h2>Say hello.</h2></div>
         <p>Find me around the internet.</p>
         <nav aria-label="Social links" className="journal-socials">
-          {socials.map(item => <a key={item.text} href={item.link} target="_blank" rel="noopener noreferrer">{item.text}<span aria-hidden="true">↗</span></a>)}
+          {socials.map(item => { const Icon = socialIcons[item.text]; return <a key={item.text} href={item.link} target="_blank" rel="noopener noreferrer"><Icon size={17} aria-hidden="true" focusable="false" /><span>{item.text}</span></a>; })}
         </nav>
         <div className="journal-signoff"><span>ADITHYA.CLOUD</span><a href="#top">Back to the sky ↑</a></div>
       </footer>
